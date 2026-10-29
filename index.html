@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <script>
-(function(){try{if(localStorage.getItem('angelo-theme')==='light')document.documentElement.classList.add('light')}catch(e){}})();
+(function(){document.documentElement.classList.add('js');try{if(localStorage.getItem('angelo-theme')==='light')document.documentElement.classList.add('light')}catch(e){}})();
 </script>
 <style>
 :root{
@@ -73,8 +73,19 @@ button{cursor:pointer}
 html.light .theme .sun{display:none}
 html.light .theme .moon{display:block}
 .profile{text-align:center;padding:clamp(22px,7vw,36px) 4px 26px}
-.symbol{width:clamp(72px,18vw,110px);margin:0 auto 12px;display:grid;place-items:center;animation:logo-enter .65s cubic-bezier(.32,.72,0,1) both}
-.symbol picture,.symbol img{display:block;width:100%;height:auto;aspect-ratio:10/11;object-fit:contain}
+.symbol{width:clamp(72px,18vw,110px);margin:0 auto 12px;display:grid;place-items:center}
+.symbol svg{display:block;width:100%;height:auto;aspect-ratio:10/11;overflow:visible}
+.symbol .symbol-ring{fill:none;stroke:#6280ff;stroke-width:13}
+.symbol .symbol-angle{fill:none;stroke:#6280ff;stroke-width:19;stroke-linecap:round;stroke-linejoin:round}
+.symbol .symbol-dot{fill:#9db0ff;transform-box:fill-box;transform-origin:center}
+html.light .symbol .symbol-ring,html.light .symbol .symbol-angle{stroke:#4261ff}
+html.light .symbol .symbol-angle{stroke:#10182d}
+html.light .symbol .symbol-dot{fill:#4261ff}
+html.js .symbol .symbol-ring{stroke-dasharray:107;stroke-dashoffset:107;animation:brand-draw .48s cubic-bezier(.32,.72,0,1) both}
+html.js .symbol .symbol-angle{stroke-dasharray:295;stroke-dashoffset:295;animation:brand-draw .5s .05s cubic-bezier(.32,.72,0,1) both}
+html.js .symbol .symbol-dot{animation:brand-dot-drop .32s .28s cubic-bezier(.32,.72,0,1) both}
+.name-mask{display:block;overflow:hidden;padding-bottom:4px}
+html.js .name-mask .name-rise{display:block;animation:brand-name-rise .3s .12s cubic-bezier(.32,.72,0,1) both}
 .profile h1{font:700 clamp(48px,13vw,60px)/1.08 'Space Grotesk',sans-serif;letter-spacing:-.078em;margin:0}
 .profile h1 .dot{display:inline-block;color:#7692FF;transform-origin:center;animation:dot-beat 3s ease-in-out infinite}
 html.light .profile h1 .dot{color:#3457ED}
@@ -82,7 +93,12 @@ html.light .profile h1 .dot{color:#3457ED}
 .profile-text{font-size:14px;line-height:1.6;color:var(--muted);max-width:345px;margin:0 auto}
 .tag{display:inline-flex;justify-content:center;align-items:center;min-height:36px;border:1px solid var(--line);padding:9px 14px;margin:20px 0 0;border-radius:999px;color:var(--text);background:rgba(91,120,255,.08);font-size:12px;font-weight:800;letter-spacing:.065em}
 .link-list{list-style:none;padding:0;margin:0;display:grid;gap:11px}
-.link-list li{margin:0;min-width:0;animation:card-enter .55s cubic-bezier(.32,.72,0,1) both;animation-delay:calc(.2s + var(--order)*70ms)}
+.link-list li{margin:0;min-width:0}
+html.js .profile .eyebrow,html.js .profile .profile-text,html.js .profile .tag{animation:brand-small-enter .3s cubic-bezier(.32,.72,0,1) both}
+html.js .profile .eyebrow{animation-delay:.15s}
+html.js .profile .profile-text{animation-delay:.2s}
+html.js .profile .tag{animation-delay:.26s}
+html.js .link-list li{animation:card-enter .32s cubic-bezier(.32,.72,0,1) both;animation-delay:calc(.14s + var(--order)*70ms)}
 .link-card{
   position:relative;isolation:isolate;min-height:84px;display:grid;align-items:center;
   grid-template-columns:44px minmax(0,1fr) 23px;gap:14px;
@@ -126,14 +142,20 @@ html.light .profile h1 .dot{color:#3457ED}
 .share svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .toast{position:fixed;z-index:20;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,12px);pointer-events:none;opacity:0;border-radius:11px;background:#142347;color:#fff;border:1px solid #40558c;padding:12px 18px;font-size:13px;font-weight:700;white-space:nowrap;transition:opacity .2s,transform .2s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-@keyframes logo-enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes brand-draw{to{stroke-dashoffset:0}}
+@keyframes brand-dot-drop{0%{opacity:0;transform:translateY(-26px) scale(.8)}55%{opacity:1;transform:translateY(5px) scale(1)}78%{opacity:1;transform:translateY(-2px) scale(1.25)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes brand-name-rise{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+@keyframes brand-small-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes dot-beat{0%,88%,100%{transform:scale(1)}92%{transform:scale(1.25)}96%{transform:scale(1)}}
 @keyframes card-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shimmer{0%,12%{transform:translateX(-140%)}40%,100%{transform:translateX(140%)}}
+@keyframes brand-reduced-fade{from{opacity:.6}to{opacity:1}}
 @media(max-width:350px){.page{padding-left:14px;padding-right:14px}.link-card{padding:13px 12px;gap:10px}}
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}
- .symbol,.profile h1 .dot,.link-list li,.link-card.primary::after{animation:none!important}
+ .symbol .symbol-ring,.symbol .symbol-angle,.symbol .symbol-dot{animation:none!important;stroke-dashoffset:0!important;opacity:1!important;transform:none!important}
+ .name-rise,.profile h1 .dot,.profile .eyebrow,.profile .profile-text,.profile .tag,.link-list li,.link-card.primary::after{animation:none!important;opacity:1!important;transform:none!important}
+ .name-rise,.profile .eyebrow,.profile .profile-text,.profile .tag,.link-list li{animation:brand-reduced-fade .15s ease-out both!important}
  .link-card,.arrow svg,.toast{transition:none!important}
  .link-card:is(:hover,:active){transform:none!important}
 }
@@ -153,12 +175,13 @@ html.light .profile h1 .dot{color:#3457ED}
   </header>
   <section class="profile" aria-label="angelo. Studio Digital">
     <div class="symbol">
-      <picture>
-        <source media="not all" srcset="/logo-light.svg" id="system-logo-source">
-        <img id="portal-logo" src="/logo.svg" width="110" height="121" alt="Símbolo da angelo. Studio Digital" decoding="async">
-      </picture>
+      <svg viewBox="0 0 200 220" role="img" aria-label="Símbolo da angelo. Studio Digital" xmlns="http://www.w3.org/2000/svg">
+        <circle class="symbol-ring" cx="100" cy="27" r="17"/>
+        <path class="symbol-angle" d="M29 190 100 61 171 190"/>
+        <circle class="symbol-dot" cx="100" cy="145" r="16"/>
+      </svg>
     </div>
-    <h1>angelo<span class="dot">.</span></h1>
+    <h1 class="name-mask"><span class="name-rise">angelo<span class="dot">.</span></span></h1>
     <p class="eyebrow">STUDIO DIGITAL</p>
     <p class="profile-text">Você cuida da estratégia. A gente cuida do digital.</p>
     <p class="tag">DESIGN + SITES + PLATAFORMAS WEB</p>
@@ -206,16 +229,11 @@ html.light .profile h1 .dot{color:#3457ED}
 <script>
 (function(){
   const theme=document.getElementById('theme');
-  const logo=document.getElementById('portal-logo');
-  const source=document.getElementById('system-logo-source');
   const meta=document.querySelector('meta[name="theme-color"]');
   function currentTheme(){return document.documentElement.classList.contains('light')?'light':'dark';}
   function applyTheme(value){
     const light=value==='light';
     document.documentElement.classList.toggle('light',light);
-    logo.src=light?'/logo-light.svg':'/logo.svg';
-    // O seletor <picture> é subordinado ao tema manual, não ao tema do aparelho.
-    source.media=light?'all':'not all';
     theme.setAttribute('aria-label',light?'Ativar tema escuro':'Ativar tema claro');
     meta.content=light?'#F5F7FD':'#0D1630';
   }
